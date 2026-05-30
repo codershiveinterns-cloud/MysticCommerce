@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Grid2X2, Heart, Menu, Search, ShoppingBag, Sparkles, X } from "lucide-react";
+import { Grid2X2, Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getStoreCategories } from "@/lib/store-data";
 import { useStore } from "@/components/storefront/StoreProvider";
@@ -37,14 +38,15 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="relative flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-[#11131a] text-white shadow-lg">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.34em] text-white">MysticCommerce</p>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-500">Premium tech marketplace</p>
-            </div>
+          <Link href="/" className="flex items-center">
+            <Image
+              src="/brand/mysticcommerce-logo-crest.svg"
+              alt="MysticCommerce"
+              width={720}
+              height={240}
+              priority
+              className="h-12 w-auto max-w-[168px] object-contain sm:h-14 sm:max-w-[196px]"
+            />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">

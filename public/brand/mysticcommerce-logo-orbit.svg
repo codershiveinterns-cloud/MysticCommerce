@@ -1,0 +1,32 @@
+<svg width="720" height="240" viewBox="0 0 720 240" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">MysticCommerce Orbit Bag logo concept</title>
+  <desc id="desc">An obsidian shopping bag mark wrapped by a golden orbit, paired with a refined MysticCommerce wordmark.</desc>
+  <defs>
+    <linearGradient id="gold" x1="48" y1="49" x2="210" y2="192" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE7A3"/>
+      <stop offset="0.5" stop-color="#F59E0B"/>
+      <stop offset="1" stop-color="#9A5A0A"/>
+    </linearGradient>
+    <linearGradient id="aqua" x1="70" y1="70" x2="178" y2="180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7DD3FC"/>
+      <stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+    <linearGradient id="word" x1="267" y1="76" x2="656" y2="146" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#B6B7C0"/>
+    </linearGradient>
+  </defs>
+  <rect width="720" height="240" rx="36" fill="#09090B"/>
+  <rect x="1" y="1" width="718" height="238" rx="35" stroke="white" stroke-opacity="0.08"/>
+  <g>
+    <ellipse cx="126" cy="120" rx="88" ry="37" transform="rotate(-24 126 120)" stroke="url(#gold)" stroke-width="4"/>
+    <path d="M77 93C77 83.6 84.6 76 94 76H158C167.4 76 175 83.6 175 93V171C175 180.4 167.4 188 158 188H94C84.6 188 77 180.4 77 171V93Z" fill="#121217" stroke="white" stroke-opacity="0.12" stroke-width="2"/>
+    <path d="M101 100C101 86.2 112.2 75 126 75C139.8 75 151 86.2 151 100" stroke="url(#gold)" stroke-width="7" stroke-linecap="round"/>
+    <path d="M99 156V115L126 143L153 115V156" stroke="url(#aqua)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M188 74L194 89L209 95L194 101L188 116L182 101L167 95L182 89L188 74Z" fill="#FFE7A3"/>
+    <circle cx="64" cy="160" r="6" fill="#F5B84B"/>
+  </g>
+  <text x="262" y="111" fill="url(#word)" font-family="Inter, Arial, sans-serif" font-size="43" font-weight="700" letter-spacing="1.5">MysticCommerce</text>
+  <text x="265" y="148" fill="#A1A1AA" font-family="Inter, Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="5">CURATED COMMERCE FOR MODERN TECH</text>
+  <path d="M265 168C347 183 472 183 646 168" stroke="url(#gold)" stroke-width="2" stroke-linecap="round" opacity="0.58"/>
+</svg>

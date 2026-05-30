@@ -10,8 +10,24 @@ const StoreContext = createContext(null);
 const initialState = {
   cartItems: [],
   wishlistIds: [],
+  reviewsByProduct: {},
   isHydrated: false,
 };
+
+function normalizeReviews(payload) {
+  if (!payload || typeof payload !== "object") {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(payload)
+      .filter(([, reviews]) => Array.isArray(reviews))
+      .map(([productId, reviews]) => [
+        productId,
+        reviews.filter((review) => review && typeof review === "object"),
+      ]),
+  );
+}
 
 function reducer(state, action) {
   switch (action.type) {
@@ -19,6 +35,7 @@ function reducer(state, action) {
       return {
         cartItems: Array.isArray(action.payload?.cartItems) ? action.payload.cartItems : [],
         wishlistIds: Array.isArray(action.payload?.wishlistIds) ? action.payload.wishlistIds : [],
+        reviewsByProduct: normalizeReviews(action.payload?.reviewsByProduct),
         isHydrated: true,
       };
     case "addToCart": {
@@ -73,6 +90,18 @@ function reducer(state, action) {
         ...state,
         cartItems: [],
       };
+    case "addReview": {
+      const productId = String(action.payload.productId);
+      const productReviews = state.reviewsByProduct[productId] ?? [];
+
+      return {
+        ...state,
+        reviewsByProduct: {
+          ...state.reviewsByProduct,
+          [productId]: [action.payload.review, ...productReviews],
+        },
+      };
+    }
     default:
       return state;
   }
@@ -104,9 +133,10 @@ export default function StoreProvider({ children }) {
       JSON.stringify({
         cartItems: state.cartItems,
         wishlistIds: state.wishlistIds,
+        reviewsByProduct: state.reviewsByProduct,
       }),
     );
-  }, [state.cartItems, state.isHydrated, state.wishlistIds]);
+  }, [state.cartItems, state.isHydrated, state.reviewsByProduct, state.wishlistIds]);
 
   const value = useMemo(() => {
     const cartDetailedItems = state.cartItems
@@ -154,8 +184,47 @@ export default function StoreProvider({ children }) {
       isWishlisted(productId) {
         return state.wishlistIds.includes(productId);
       },
+      addReview(productId, review) {
+        dispatch({
+          type: "addReview",
+          payload: {
+            productId,
+            review: {
+              id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
+              createdAt: new Date().toISOString(),
+              ...review,
+            },
+          },
+        });
+      },
+      getProductReviews(productId) {
+        return state.reviewsByProduct[String(productId)] ?? [];
+      },
+      getProductReviewStats(productId) {
+        const reviews = state.reviewsByProduct[String(productId)] ?? [];
+        const average = reviews.length
+          ? reviews.reduce((total, review) => total + Number(review.rating || 0), 0) / reviews.length
+          : 0;
+
+        return {
+          average,
+          count: reviews.length,
+        };
+      },
+      getAllReviews() {
+        return Object.entries(state.reviewsByProduct)
+          .flatMap(([productId, reviews]) =>
+            reviews.map((review) => ({
+              ...review,
+              productId,
+              product: getProductById(productId),
+            })),
+          )
+          .filter((review) => review.product)
+          .sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime());
+      },
     };
-  }, [state.cartItems, state.isHydrated, state.wishlistIds]);
+  }, [state.cartItems, state.isHydrated, state.reviewsByProduct, state.wishlistIds]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }

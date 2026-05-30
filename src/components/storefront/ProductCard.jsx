@@ -8,8 +8,9 @@ import { formatCurrency, getProductImageSrc } from "@/lib/store-data";
 import { useStore } from "@/components/storefront/StoreProvider";
 
 export default function ProductCard({ product, priority = false }) {
-  const { addToCart, toggleWishlist, isWishlisted } = useStore();
+  const { addToCart, getProductReviewStats, toggleWishlist, isWishlisted } = useStore();
   const wished = isWishlisted(product.id);
+  const reviewStats = getProductReviewStats(product.id);
 
   return (
     <motion.article whileHover={{ y: -6 }} className="group flex h-full flex-col overflow-hidden rounded-[28px] glass-panel-glow">
@@ -50,8 +51,14 @@ export default function ProductCard({ product, priority = false }) {
           <p className="text-sm leading-6 text-zinc-400">{product.tagline}</p>
           <div className="flex items-center gap-2 text-sm text-zinc-300">
             <Star className="h-4 w-4 fill-white/80 text-white/80" />
-            <span>{product.rating}</span>
-            <span className="text-zinc-500">({product.reviews} reviews)</span>
+            {reviewStats.count > 0 ? (
+              <>
+                <span>{reviewStats.average.toFixed(1)}</span>
+                <span className="text-zinc-500">({reviewStats.count} reviews)</span>
+              </>
+            ) : (
+              <span className="text-zinc-500">No reviews yet</span>
+            )}
           </div>
         </div>
 
@@ -83,4 +90,3 @@ export default function ProductCard({ product, priority = false }) {
     </motion.article>
   );
 }
-

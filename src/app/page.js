@@ -2,13 +2,13 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ProductCard from "@/components/storefront/ProductCard";
 import CategoryGrid from "@/components/storefront/CategoryGrid";
+import CustomerReviews from "@/components/storefront/CustomerReviews";
 import NewsletterPanel from "@/components/storefront/NewsletterPanel";
 import StoreSection from "@/components/storefront/StoreSection";
 import StorefrontHero from "@/components/storefront/StorefrontHero";
 import {
   brandPartners,
   collectionHighlights,
-  customerStories,
   getBestSellers,
   getFlashDeals,
   getGamingWorkspaceProducts,
@@ -132,25 +132,10 @@ export default function Home() {
       <StoreSection
         id="reviews"
         eyebrow="Customer reviews"
-        title="What MysticCommerce customers are saying"
-        description="Realistic product-led feedback from shoppers building better work, gaming, and everyday tech setups."
+        title="Customer reviews start with real shoppers"
+        description="MysticCommerce now displays reviews only after users submit them from product pages."
       >
-        <div className="grid gap-6 lg:grid-cols-3">
-          {customerStories.map((story) => (
-            <article key={story.name} className="rounded-[28px] border border-white/8 bg-white/[0.03] p-7">
-              <p className="text-sm leading-7 text-zinc-300">&quot;{story.quote}&quot;</p>
-              <div className="mt-8 flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-sm font-semibold text-white">
-                  {story.initials}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-white">{story.name}</p>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">{story.role}</p>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
+        <CustomerReviews />
       </StoreSection>
 
       <StoreSection

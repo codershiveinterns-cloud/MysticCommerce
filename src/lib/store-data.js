@@ -5,8 +5,8 @@ const products = [
     category: "Wireless Headphones & Audio",
     price: 149,
     compareAtPrice: 189,
-    rating: 4.8,
-    reviews: 214,
+    rating: 0,
+    reviews: 0,
     badge: "Best Seller",
     stock: 16,
     serialNumber: "MC-AUD-2101",
@@ -36,10 +36,7 @@ const products = [
     },
     advisory: "Enable game mode before competitive sessions for the lowest possible latency.",
     delivery: "Ships in 24 hours",
-    reviewsList: [
-      { name: "Tara Singh", rating: 5, date: "2 days ago", comment: "Clear calls, strong bass, and the case feels more premium than earbuds twice the price." },
-      { name: "Marcus Lee", rating: 4, date: "1 week ago", comment: "Excellent for commuting and quick laptop switching." },
-    ],
+    reviewsList: [],
   },
   {
     id: 2,
@@ -47,8 +44,8 @@ const products = [
     category: "Mobile Accessories",
     price: 89,
     compareAtPrice: 109,
-    rating: 4.7,
-    reviews: 132,
+    rating: 0,
+    reviews: 0,
     badge: "Flash Deal",
     stock: 11,
     serialNumber: "MC-MOB-3892",
@@ -77,10 +74,7 @@ const products = [
     },
     advisory: "Use the included cable for best performance with high-power laptops.",
     delivery: "Flash deal ends tonight",
-    reviewsList: [
-      { name: "Ishaan Patel", rating: 5, date: "5 days ago", comment: "My desk is finally clean. One charger now handles my laptop, phone, and camera batteries." },
-      { name: "Emily Rose", rating: 4, date: "2 weeks ago", comment: "Small footprint and plenty of power." },
-    ],
+    reviewsList: [],
   },
   {
     id: 3,
@@ -88,8 +82,8 @@ const products = [
     category: "Gaming Accessories",
     price: 179,
     compareAtPrice: 219,
-    rating: 4.9,
-    reviews: 301,
+    rating: 0,
+    reviews: 0,
     badge: "Trending",
     stock: 9,
     serialNumber: "MC-GAM-7505",
@@ -119,10 +113,7 @@ const products = [
     },
     advisory: "Switch puller and extra caps are included in the box for quick customization.",
     delivery: "Limited warehouse stock",
-    reviewsList: [
-      { name: "Riya Thomas", rating: 5, date: "3 days ago", comment: "Looks incredible, sounds creamy, and the wireless performance is instant." },
-      { name: "Ben Howard", rating: 5, date: "8 days ago", comment: "Exactly the kind of premium gaming keyboard I wanted for my hybrid setup." },
-    ],
+    reviewsList: [],
   },
   {
     id: 4,
@@ -130,8 +121,8 @@ const products = [
     category: "Smart Home Products",
     price: 129,
     compareAtPrice: 149,
-    rating: 4.6,
-    reviews: 98,
+    rating: 0,
+    reviews: 0,
     badge: "New",
     stock: 14,
     serialNumber: "MC-HOM-4016",
@@ -160,7 +151,7 @@ const products = [
     },
     advisory: "Mount above or behind a display for the most balanced bias-light effect.",
     delivery: "Ships in 2 business days",
-    reviewsList: [{ name: "Mia Collins", rating: 4, date: "6 days ago", comment: "A beautiful desk light with surprisingly useful app presets." }],
+    reviewsList: [],
   },
   {
     id: 5,
@@ -168,8 +159,8 @@ const products = [
     category: "Creator & Streaming Accessories",
     price: 239,
     compareAtPrice: 279,
-    rating: 4.8,
-    reviews: 156,
+    rating: 0,
+    reviews: 0,
     badge: "Premium",
     stock: 7,
     serialNumber: "MC-CRT-5188",
@@ -198,10 +189,7 @@ const products = [
     },
     advisory: "Use an external power source when connecting bus-powered drives and capture devices together.",
     delivery: "Premium support included",
-    reviewsList: [
-      { name: "Kavya Menon", rating: 5, date: "4 days ago", comment: "This instantly made my streaming desk feel professional." },
-      { name: "Daniel Frost", rating: 4, date: "10 days ago", comment: "Reliable and fast, especially with cameras and external SSDs." },
-    ],
+    reviewsList: [],
   },
   {
     id: 6,
@@ -209,8 +197,8 @@ const products = [
     category: "Gaming Accessories",
     price: 59,
     compareAtPrice: 79,
-    rating: 4.5,
-    reviews: 188,
+    rating: 0,
+    reviews: 0,
     badge: "Flash Deal",
     stock: 21,
     serialNumber: "MC-GAM-1180",
@@ -239,7 +227,7 @@ const products = [
     },
     advisory: "Keep the USB-C connector seated firmly to avoid intermittent lighting disconnects.",
     delivery: "Flash deal shipping today",
-    reviewsList: [{ name: "Noah Kim", rating: 5, date: "1 day ago", comment: "Looks amazing and the surface is excellent for both gaming and editing." }],
+    reviewsList: [],
   },
   {
     id: 7,
@@ -247,8 +235,8 @@ const products = [
     category: "Laptops & Workspace Setup",
     price: 74,
     compareAtPrice: 94,
-    rating: 4.7,
-    reviews: 141,
+    rating: 0,
+    reviews: 0,
     badge: "Workspace Pick",
     stock: 18,
     serialNumber: "MC-WRK-2476",
@@ -277,7 +265,7 @@ const products = [
     },
     advisory: "Pair with an external keyboard for the best ergonomic result during long sessions.",
     delivery: "Back in stock",
-    reviewsList: [{ name: "Zoe Harper", rating: 5, date: "11 days ago", comment: "Strong, minimal, and easy to carry between home and office." }],
+    reviewsList: [],
   },
   {
     id: 8,
@@ -285,8 +273,8 @@ const products = [
     category: "Smart Gadgets",
     price: 39,
     compareAtPrice: 49,
-    rating: 4.4,
-    reviews: 267,
+    rating: 0,
+    reviews: 0,
     badge: "Everyday Essential",
     stock: 34,
     serialNumber: "MC-SGD-0983",
@@ -315,7 +303,7 @@ const products = [
     },
     advisory: "Best stored in the outer card layer of a wallet for strongest signal performance.",
     delivery: "Ships same day",
-    reviewsList: [{ name: "Olivia Grant", rating: 4, date: "9 days ago", comment: "Thin enough for my wallet and the recharge setup is simple." }],
+    reviewsList: [],
   },
   {
     id: 9,
@@ -323,8 +311,8 @@ const products = [
     category: "Trending Digital Products",
     price: 29,
     compareAtPrice: 39,
-    rating: 4.9,
-    reviews: 93,
+    rating: 0,
+    reviews: 0,
     badge: "Digital Download",
     stock: 999,
     serialNumber: "MC-DIG-5520",
@@ -353,7 +341,7 @@ const products = [
     },
     advisory: "Apply on properly exposed footage and dial intensity down for skin tones when needed.",
     delivery: "Available instantly after checkout",
-    reviewsList: [{ name: "Aman Verma", rating: 5, date: "1 week ago", comment: "Fastest way I have found to make product reels look premium." }],
+    reviewsList: [],
   },
   {
     id: 10,
@@ -361,8 +349,8 @@ const products = [
     category: "Lifestyle Tech Products",
     price: 69,
     compareAtPrice: 89,
-    rating: 4.5,
-    reviews: 121,
+    rating: 0,
+    reviews: 0,
     badge: "New",
     stock: 20,
     serialNumber: "MC-LIF-3022",
@@ -391,7 +379,7 @@ const products = [
     },
     advisory: "Run a cleaning cycle with the lid closed and bottle empty for best results.",
     delivery: "Ships tomorrow",
-    reviewsList: [{ name: "Hannah Scott", rating: 4, date: "12 days ago", comment: "Looks premium and the hydration reminders are actually helpful." }],
+    reviewsList: [],
   },
   {
     id: 11,
@@ -399,8 +387,8 @@ const products = [
     category: "Everyday Tech Essentials",
     price: 199,
     compareAtPrice: 249,
-    rating: 4.6,
-    reviews: 87,
+    rating: 0,
+    reviews: 0,
     badge: "Weekend Pick",
     stock: 13,
     serialNumber: "MC-ESS-6733",
@@ -429,7 +417,7 @@ const products = [
     },
     advisory: "Use in dimmer rooms for the best contrast and color depth.",
     delivery: "Ships in 48 hours",
-    reviewsList: [{ name: "Vikram Das", rating: 5, date: "2 weeks ago", comment: "This is my go-to projector for casual movie nights and quick pitches." }],
+    reviewsList: [],
   },
   {
     id: 12,
@@ -437,8 +425,8 @@ const products = [
     category: "Creator & Streaming Accessories",
     price: 119,
     compareAtPrice: 149,
-    rating: 4.7,
-    reviews: 172,
+    rating: 0,
+    reviews: 0,
     badge: "Creator Favorite",
     stock: 15,
     serialNumber: "MC-CRT-8841",
@@ -467,7 +455,7 @@ const products = [
     },
     advisory: "Mount slightly above eye line and keep a soft key light in front for the best image.",
     delivery: "Creator support included",
-    reviewsList: [{ name: "Chloe Martin", rating: 5, date: "4 days ago", comment: "A huge upgrade for calls and streams without needing a full camera rig." }],
+    reviewsList: [],
   },
 ];
 
@@ -486,30 +474,9 @@ const categoryDescriptions = {
 
 export const brandPartners = ["HyperPixel", "Voltware", "Auraloop", "NovaHouse", "AxisPlay", "CloudFrame"];
 
-export const customerStories = [
-  {
-    name: "Rohan Mehta",
-    role: "Verified buyer - Aether Mechanical 75",
-    initials: "RM",
-    quote: "The keyboard arrived well packed, the switches feel smooth, and the wireless connection has been rock solid for work and late-night gaming.",
-  },
-  {
-    name: "Priya Nair",
-    role: "Verified buyer - Strata Creator Dock",
-    initials: "PN",
-    quote: "I replaced three adapters with one dock. My monitor, camera, SSD, and mic all stay connected, and the setup finally looks clean on my desk.",
-  },
-  {
-    name: "Daniel Carter",
-    role: "Verified buyer - Nebula X Pro Earbuds",
-    initials: "DC",
-    quote: "Clear calls, strong battery life, and quick laptop switching. They feel premium without being flashy, which is exactly what I wanted.",
-  },
-];
-
 export const homeMetrics = [
   { value: "12K+", label: "Products explored weekly" },
-  { value: "4.8/5", label: "Average customer satisfaction" },
+  { value: "10+", label: "Curated tech categories" },
   { value: "24h", label: "Fast dispatch on core inventory" },
 ];
 
@@ -658,3 +625,5 @@ export function filterProducts({ category, collection, query, sort = "featured" 
 
   return sorted;
 }
+
+

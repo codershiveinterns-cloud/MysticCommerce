@@ -7,6 +7,7 @@ import { ArrowLeft, Check, Heart, ShieldAlert, ShoppingBag, Sparkles, Star } fro
 import { AnimatePresence, motion } from "framer-motion";
 import ProductCard from "@/components/storefront/ProductCard";
 import ProductArtwork from "@/components/storefront/ProductArtwork";
+import ProductReviews from "@/components/storefront/ProductReviews";
 import { useStore } from "@/components/storefront/StoreProvider";
 import { formatCurrency, getProductById, getProductImageSrc, getRelatedProducts } from "@/lib/store-data";
 
@@ -23,8 +24,9 @@ function ProductDetailContent({ product }) {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [isAdded, setIsAdded] = useState(false);
-  const { addToCart, toggleWishlist, isWishlisted } = useStore();
+  const { addToCart, getProductReviewStats, toggleWishlist, isWishlisted } = useStore();
   const wished = isWishlisted(product.id);
+  const reviewStats = getProductReviewStats(product.id);
 
   function handleAddToCart() {
     addToCart(product.id, selectedVariant.id, quantity);
@@ -99,8 +101,14 @@ function ProductDetailContent({ product }) {
               <div className="flex flex-wrap items-center gap-5 text-sm text-zinc-300">
                 <div className="flex items-center gap-2">
                   <Star className="h-4 w-4 fill-white/80 text-white/80" />
-                  <span>{product.rating}</span>
-                  <span className="text-zinc-500">({product.reviews} reviews)</span>
+                  {reviewStats.count > 0 ? (
+                    <>
+                      <span>{reviewStats.average.toFixed(1)}</span>
+                      <span className="text-zinc-500">({reviewStats.count} reviews)</span>
+                    </>
+                  ) : (
+                    <span className="text-zinc-500">No reviews yet</span>
+                  )}
                 </div>
                 <span className="rounded-full border border-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-zinc-400">
                   {product.serialNumber}
@@ -225,30 +233,7 @@ function ProductDetailContent({ product }) {
           </div>
         </div>
 
-        <section className="space-y-6 border-t border-white/8 pt-10">
-          <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Product reviews</p>
-            <h2 className="mt-3 text-3xl font-semibold text-white">What shoppers are saying</h2>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2">
-            {product.reviewsList.map((review) => (
-              <article key={`${review.name}-${review.date}`} className="rounded-[28px] border border-white/8 bg-white/[0.03] p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <p className="text-sm font-semibold text-white">{review.name}</p>
-                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">{review.date}</p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {Array.from({ length: review.rating }).map((_, index) => (
-                      <Star key={index} className="h-4 w-4 fill-white/80 text-white/80" />
-                    ))}
-                  </div>
-                </div>
-                <p className="mt-4 text-sm leading-7 text-zinc-400">“{review.comment}”</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        <ProductReviews product={product} />
 
         <section className="space-y-6 border-t border-white/8 pt-10">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -270,3 +255,4 @@ function ProductDetailContent({ product }) {
     </div>
   );
 }
+

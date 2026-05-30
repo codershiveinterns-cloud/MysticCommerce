@@ -38,14 +38,14 @@ export default function Navbar() {
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="flex shrink-0 items-center">
             <Image
               src="/brand/mysticcommerce-logo-crest.svg"
               alt="MysticCommerce"
               width={720}
               height={240}
               priority
-              className="h-12 w-auto max-w-[168px] object-contain sm:h-14 sm:max-w-[196px]"
+              className="h-14 w-auto max-w-[180px] object-contain sm:h-16 sm:max-w-[210px]"
             />
           </Link>
 

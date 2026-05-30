@@ -63,7 +63,7 @@ export default function Home() {
       <StoreSection
         eyebrow="Best sellers"
         title="Featured products customers keep coming back for"
-        description="A premium mix of bestselling audio, creator tools, gaming gear, and everyday accessories selected to match MysticCommerce’s modern storefront direction."
+        description="A premium mix of bestselling audio, creator tools, gaming gear, and everyday accessories selected for modern shoppers who expect performance and polish."
         actions={<SectionLink href="/products">Browse catalog</SectionLink>}
       >
         <ProductGrid products={bestSellers} />
@@ -81,7 +81,7 @@ export default function Home() {
       <StoreSection
         eyebrow="New arrivals"
         title="Fresh drops across smart gadgets, creator gear, and lifestyle tech"
-        description="The first milestone includes dedicated merchandising areas for recently launched products so the homepage feels alive and easy to scan on desktop and mobile."
+        description="Recently launched products are grouped for quick discovery across desk setups, creator workflows, mobile carry, and smart living."
         actions={<SectionLink href="/products?collection=new-arrivals">Shop new</SectionLink>}
       >
         <ProductGrid products={newArrivals} />
@@ -89,8 +89,8 @@ export default function Home() {
 
       <StoreSection
         eyebrow="Categories"
-        title="Responsive category layouts ready for deeper storefront expansion"
-        description="This frontend milestone covers category discovery, product browsing, and clean navigation patterns that can scale into a larger ecommerce architecture later."
+        title="Shop by category, setup, and everyday routine"
+        description="Explore clean product categories built around how customers actually shop for tech: by setup, use case, and everyday routine."
       >
         <CategoryGrid categories={categories} />
       </StoreSection>
@@ -103,10 +103,10 @@ export default function Home() {
       >
         <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[32px] border border-white/8 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-8 sm:p-10">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Responsive hero spotlight</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Setup spotlight</p>
             <h3 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">Build a setup that looks premium in motion and in stills.</h3>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-400 sm:text-base">
-              From wireless keyboards and creator docks to ergonomic stands and ambient lighting, the gaming and workspace collection is designed to show the frontend milestone’s ability to merchandise full lifestyle narratives rather than isolated products.
+              From wireless keyboards and creator docks to ergonomic stands and ambient lighting, the gaming and workspace collection is designed around complete setups rather than isolated products.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {brandPartners.slice(0, 3).map((partner) => (
@@ -122,8 +122,8 @@ export default function Home() {
 
       <StoreSection
         eyebrow="Trending now"
-        title="High-interest products driving the current storefront story"
-        description="A storefront concept feels stronger when it surfaces demand signals like trending products, especially for mobile-first discovery and fast browsing."
+        title="Products gaining momentum right now"
+        description="See the products trending across gaming desks, creator kits, mobile carry, and smart home upgrades."
         actions={<SectionLink href="/products?collection=trending">See more</SectionLink>}
       >
         <ProductGrid products={trendingProducts} />
@@ -132,13 +132,13 @@ export default function Home() {
       <StoreSection
         id="reviews"
         eyebrow="Customer reviews"
-        title="Social proof that supports the premium ecommerce direction"
-        description="Review cards and brand partnerships give the concept more credibility while keeping the homepage visually balanced."
+        title="What MysticCommerce customers are saying"
+        description="Realistic product-led feedback from shoppers building better work, gaming, and everyday tech setups."
       >
         <div className="grid gap-6 lg:grid-cols-3">
           {customerStories.map((story) => (
             <article key={story.name} className="rounded-[28px] border border-white/8 bg-white/[0.03] p-7">
-              <p className="text-sm leading-7 text-zinc-300">“{story.quote}”</p>
+              <p className="text-sm leading-7 text-zinc-300">&quot;{story.quote}&quot;</p>
               <div className="mt-8 flex items-center gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-sm font-semibold text-white">
                   {story.initials}
@@ -155,8 +155,8 @@ export default function Home() {
 
       <StoreSection
         eyebrow="Brand partnerships"
-        title="A premium commerce concept needs clear brand ecosystem cues"
-        description="These partnership blocks help round out the visual story and reinforce the marketplace positioning requested for MysticCommerce."
+        title="A curated ecosystem of modern tech brands"
+        description="MysticCommerce brings together emerging hardware, creator gear, and lifestyle tech names in one premium catalog."
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {brandPartners.map((partner) => (

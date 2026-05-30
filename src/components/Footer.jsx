@@ -1,7 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { Check, ShieldCheck, Sparkles } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 export default function Footer() {
@@ -13,21 +14,13 @@ export default function Footer() {
       <div className="absolute left-1/2 top-0 h-40 w-40 -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.2fr_0.8fr_0.8fr_1fr] lg:px-8">
         <div className="space-y-5">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-[#11131a] text-white">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold uppercase tracking-[0.34em] text-white">MysticCommerce</p>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.28em] text-zinc-500">Future-ready shopping</p>
-            </div>
-          </div>
+          <Image src="/brand/mysticcommerce-logo-crest.svg" alt="MysticCommerce" width={720} height={240} className="h-14 w-auto max-w-[210px] object-contain object-left" />
           <p className="max-w-md text-sm leading-7 text-zinc-400">
-            A premium storefront concept for electronics, creator gear, gaming accessories, mobile tools, smart home devices, and everyday tech essentials.
+            A premium destination for electronics, creator gear, gaming accessories, mobile tools, smart home devices, and everyday tech essentials.
           </p>
           <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            Frontend milestone · 7 days · 2 revisions
+            Secure checkout / fast dispatch / curated tech
           </div>
         </div>
 
@@ -52,13 +45,10 @@ export default function Footer() {
         />
 
         <div className="space-y-4 rounded-[28px] border border-white/8 bg-white/[0.03] p-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white">Milestone delivery</p>
-          <ul className="space-y-3 text-sm text-zinc-400">
-            <li>Premium homepage and storefront UI</li>
-            <li>Responsive product, catalog, and category layouts</li>
-            <li>Navigation, animations, and mobile optimization</li>
-            <li>Frontend architecture for future ecommerce growth</li>
-          </ul>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white">Member updates</p>
+          <p className="text-sm leading-7 text-zinc-400">
+            Get early access to limited drops, setup edits, and private offers across the MysticCommerce catalog.
+          </p>
           <form
             onSubmit={(event) => {
               event.preventDefault();
@@ -88,7 +78,7 @@ export default function Footer() {
 
       <div className="border-t border-white/8">
         <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-6 text-xs text-zinc-500 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-          <p>© {currentYear} MysticCommerce. UI/UX and frontend milestone storefront concept.</p>
+          <p>&copy; {currentYear} MysticCommerce. Premium tech marketplace.</p>
           <div className="flex items-center gap-5">
             <Link href="/cart" className="transition hover:text-zinc-300">
               Cart

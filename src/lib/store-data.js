@@ -488,22 +488,22 @@ export const brandPartners = ["HyperPixel", "Voltware", "Auraloop", "NovaHouse",
 
 export const customerStories = [
   {
-    name: "Nina Brooks",
-    role: "Product Designer",
-    initials: "NB",
-    quote: "MysticCommerce feels curated instead of chaotic. I can actually discover products that fit my workspace and creator setup.",
+    name: "Rohan Mehta",
+    role: "Verified buyer - Aether Mechanical 75",
+    initials: "RM",
+    quote: "The keyboard arrived well packed, the switches feel smooth, and the wireless connection has been rock solid for work and late-night gaming.",
   },
   {
-    name: "Arjun Mehta",
-    role: "Streamer & Editor",
-    initials: "AM",
-    quote: "The creator gear picks are strong, and the premium presentation makes the whole storefront feel trustworthy.",
+    name: "Priya Nair",
+    role: "Verified buyer - Strata Creator Dock",
+    initials: "PN",
+    quote: "I replaced three adapters with one dock. My monitor, camera, SSD, and mic all stay connected, and the setup finally looks clean on my desk.",
   },
   {
-    name: "Lena Ortiz",
-    role: "Remote Software Engineer",
-    initials: "LO",
-    quote: "It is the first tech storefront where gaming gear and workspace essentials feel like part of the same lifestyle.",
+    name: "Daniel Carter",
+    role: "Verified buyer - Nebula X Pro Earbuds",
+    initials: "DC",
+    quote: "Clear calls, strong battery life, and quick laptop switching. They feel premium without being flashy, which is exactly what I wanted.",
   },
 ];
 

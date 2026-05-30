@@ -16,16 +16,16 @@ export default function CartPage() {
         <div className="space-y-6">
           <div className="rounded-[32px] border border-white/8 bg-white/[0.03] p-8">
             <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Cart</p>
-            <h1 className="mt-4 text-4xl font-semibold text-white">Your frontend storefront cart</h1>
+            <h1 className="mt-4 text-4xl font-semibold text-white">Your MysticCommerce cart</h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-400">
-              This milestone keeps cart behavior lightweight and client-side while still delivering a realistic shopping flow for UI/UX review.
+              Review your selected tech essentials, adjust quantities, and continue toward a clean, premium checkout experience.
             </p>
           </div>
 
           {cartItems.length === 0 ? (
             <div className="rounded-[32px] border border-white/8 bg-white/[0.03] p-8 text-center">
               <p className="text-lg font-semibold text-white">Your cart is empty.</p>
-              <p className="mt-3 text-sm text-zinc-400">Browse the catalog and add premium tech products to preview the storefront experience.</p>
+              <p className="mt-3 text-sm text-zinc-400">Browse the catalog and add premium tech products to start your order.</p>
               <Link href="/products" className="mt-6 inline-flex rounded-2xl bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#09090b] transition hover:bg-zinc-100">
                 Continue shopping
               </Link>
@@ -100,7 +100,7 @@ export default function CartPage() {
             <ArrowRight className="h-4 w-4" />
           </Link>
           <p className="mt-4 text-xs leading-6 text-zinc-500">
-            Checkout is intentionally a polished placeholder in this milestone so the frontend journey can be reviewed without backend payment integration.
+            Shipping and taxes are estimated before final order confirmation.
           </p>
         </aside>
       </div>

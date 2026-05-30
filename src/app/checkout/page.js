@@ -15,10 +15,10 @@ export default function CheckoutPage() {
       <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.05fr_0.95fr]">
         <div className="space-y-6">
           <div className="rounded-[32px] border border-white/8 bg-white/[0.03] p-8">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Checkout placeholder</p>
-            <h1 className="mt-4 text-4xl font-semibold text-white">Polished frontend checkout for milestone review</h1>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Checkout</p>
+            <h1 className="mt-4 text-4xl font-semibold text-white">Secure checkout for premium tech orders</h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-400">
-              This screen is intentionally presentation-focused. It completes the visual shopping journey for UI/UX approval while leaving real payment and order processing for a later backend phase.
+              Add your contact, delivery, and payment details to complete your MysticCommerce order.
             </p>
           </div>
 
@@ -41,9 +41,9 @@ export default function CheckoutPage() {
             <div className="flex items-start gap-3">
               <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-300" />
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Milestone note</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-300">Buyer protection</p>
                 <p className="mt-2 text-sm leading-6 text-zinc-200">
-                  Real payment integration, customer accounts, and order tracking are intentionally out of scope for this frontend delivery milestone.
+                  Every order is reviewed for safe dispatch, tracked delivery, and support coverage on eligible products.
                 </p>
               </div>
             </div>
@@ -54,7 +54,7 @@ export default function CheckoutPage() {
           <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">Order summary</p>
           <div className="mt-6 space-y-4">
             {cartItems.length === 0 ? (
-              <p className="text-sm text-zinc-400">No items in cart yet. Add products from the catalog to preview the checkout summary.</p>
+              <p className="text-sm text-zinc-400">No items in cart yet. Add products from the catalog to begin checkout.</p>
             ) : (
               cartItems.map((item) => (
                 <div key={`${item.product.id}-${item.variant.id}`} className="rounded-2xl border border-white/8 bg-black/20 p-4">
@@ -86,7 +86,7 @@ export default function CheckoutPage() {
           </div>
 
           <button type="button" className="mt-8 w-full rounded-2xl bg-white px-5 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-[#09090b] transition hover:bg-zinc-100">
-            Place order placeholder
+            Place order
           </button>
           <Link href="/products" className="mt-4 inline-flex text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400 transition hover:text-white">
             Continue browsing

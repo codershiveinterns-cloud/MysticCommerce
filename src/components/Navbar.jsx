@@ -7,10 +7,12 @@ import { useRouter } from "next/navigation";
 import { Grid2X2, Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { getStoreCategories } from "@/lib/store-data";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { useStore } from "@/components/storefront/StoreProvider";
 
 export default function Navbar() {
   const router = useRouter();
+  const { user, logout } = useAuth();
   const { cartCount, wishlistCount } = useStore();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -62,6 +64,11 @@ export default function Navbar() {
             <Link href="/#reviews" className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-400 transition hover:text-white">
               Reviews
             </Link>
+            {user?.role === "admin" ? (
+              <Link href="/admin" className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-200 transition hover:text-white">
+                Admin
+              </Link>
+            ) : null}
           </nav>
 
           <div className="hidden items-center gap-4 lg:flex">
@@ -82,6 +89,19 @@ export default function Navbar() {
               <ShoppingBag className="h-4 w-4" />
               {cartCount > 0 ? <Badge dark>{cartCount}</Badge> : null}
             </Link>
+            {user ? (
+              <button
+                type="button"
+                onClick={logout}
+                className="rounded-2xl border border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300 transition hover:border-white/20 hover:text-white"
+              >
+                Sign out
+              </button>
+            ) : (
+              <Link href="/account" className="rounded-2xl border border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300 transition hover:border-white/20 hover:text-white">
+                Sign in
+              </Link>
+            )}
           </div>
 
           <div className="flex items-center gap-3 lg:hidden">
@@ -126,6 +146,14 @@ export default function Navbar() {
               </Link>
               <Link href="/products" onClick={() => setIsOpen(false)} className="rounded-2xl border border-white/8 px-4 py-3 hover:border-white/16 hover:text-white">
                 Catalog
+              </Link>
+              {user?.role === "admin" ? (
+                <Link href="/admin" onClick={() => setIsOpen(false)} className="rounded-2xl border border-white/8 px-4 py-3 hover:border-white/16 hover:text-white">
+                  Admin
+                </Link>
+              ) : null}
+              <Link href="/account" onClick={() => setIsOpen(false)} className="rounded-2xl border border-white/8 px-4 py-3 hover:border-white/16 hover:text-white">
+                {user ? "Account" : "Sign in"}
               </Link>
             </div>
 

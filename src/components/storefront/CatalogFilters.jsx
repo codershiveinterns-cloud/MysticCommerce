@@ -106,6 +106,6 @@ export default function CatalogFilters({ categories }) {
           </option>
         ))}
       </select>
-    </div>
+    </form>
   );
 }

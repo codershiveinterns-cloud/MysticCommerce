@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const sortOptions = [
@@ -26,6 +27,11 @@ export default function CatalogFilters({ categories }) {
   const currentCollection = searchParams.get("collection") ?? "all";
   const currentSort = searchParams.get("sort") ?? "featured";
   const currentQuery = searchParams.get("q") ?? "";
+  const [query, setQuery] = useState(currentQuery);
+
+  useEffect(() => {
+    setQuery(currentQuery);
+  }, [currentQuery]);
 
   function updateParam(key, value) {
     const next = new URLSearchParams(searchParams.toString());
@@ -39,12 +45,17 @@ export default function CatalogFilters({ categories }) {
     router.push(`/products${next.toString() ? `?${next}` : ""}`);
   }
 
+  function handleSearchSubmit(event) {
+    event.preventDefault();
+    updateParam("q", query.trim());
+  }
+
   return (
-    <div className="grid gap-4 rounded-[30px] border border-white/8 bg-white/[0.03] p-5 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <form onSubmit={handleSearchSubmit} className="grid gap-4 rounded-[30px] border border-white/8 bg-white/[0.03] p-5 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <input
         type="search"
-        value={currentQuery}
-        onChange={(event) => updateParam("q", event.target.value)}
+        value={query}
+        onChange={(event) => setQuery(event.target.value)}
         placeholder="Search products, categories, and creator tools"
         className="min-h-12 rounded-2xl border border-white/10 bg-[#0b0c10] px-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-white/20"
       />

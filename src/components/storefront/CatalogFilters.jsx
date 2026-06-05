@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const sortOptions = [
@@ -52,13 +53,22 @@ export default function CatalogFilters({ categories }) {
 
   return (
     <form onSubmit={handleSearchSubmit} className="grid gap-4 rounded-[30px] border border-white/8 bg-white/[0.03] p-5 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
-      <input
-        type="search"
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-        placeholder="Search products, categories, and creator tools"
-        className="min-h-12 rounded-2xl border border-white/10 bg-[#0b0c10] px-4 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-white/20"
-      />
+      <div className="relative">
+        <input
+          type="search"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="Search products, categories, and creator tools"
+          className="min-h-12 w-full rounded-2xl border border-white/10 bg-[#0b0c10] px-4 pr-28 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-white/20"
+        />
+        <button
+          type="submit"
+          className="absolute inset-y-1 right-1 inline-flex h-10 items-center justify-center rounded-2xl bg-white/10 px-4 text-zinc-200 transition hover:bg-white/15 hover:text-white"
+          aria-label="Search products"
+        >
+          <Search className="h-4 w-4" />
+        </button>
+      </div>
 
       <select
         value={currentCategory}

@@ -1,9 +1,11 @@
-import { promises as fs } from "fs";
+import { mkdirSync } from "fs";
 import path from "path";
+import Database from "better-sqlite3";
 import { getAllProducts } from "@/lib/store-data";
 import { createId, hashPassword } from "@/lib/backend/crypto";
 
-const DB_PATH = process.env.MYSTIC_DB_PATH || path.join(/*turbopackIgnore: true*/ process.cwd(), ".data", "mysticcommerce.json");
+const DB_PATH = process.env.MYSTIC_DB_PATH || (process.env.NODE_ENV === "production" ? path.join("/tmp", "mysticcommerce.sqlite") : path.join(process.cwd(), ".data", "mysticcommerce.sqlite"));
+let database = null;
 
 function initialInventory() {
   return Object.fromEntries(
@@ -45,43 +47,58 @@ function createInitialDb() {
   };
 }
 
-async function ensureDbFile() {
-  await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
-
-  try {
-    await fs.access(DB_PATH);
-  } catch {
-    await fs.writeFile(DB_PATH, JSON.stringify(createInitialDb(), null, 2));
+function openDatabase() {
+  if (database) {
+    return database;
   }
+
+  mkdirSync(path.dirname(DB_PATH), { recursive: true });
+  database = new Database(DB_PATH);
+  database.pragma("journal_mode = WAL");
+  database.prepare(
+    `CREATE TABLE IF NOT EXISTS state (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
+    )`,
+  ).run();
+
+  const row = database.prepare("SELECT value FROM state WHERE key = ?").get("store");
+
+  if (!row) {
+    const initialState = createInitialDb();
+    database.prepare("INSERT INTO state (key, value) VALUES (?, ?)").run("store", JSON.stringify(initialState, null, 2));
+  }
+
+  return database;
 }
 
 export async function readDb() {
-  await ensureDbFile();
-  const raw = await fs.readFile(DB_PATH, "utf8");
-  const db = JSON.parse(raw);
+  const db = openDatabase();
+  const row = db.prepare("SELECT value FROM state WHERE key = ?").get("store");
+  const result = row ? JSON.parse(row.value) : createInitialDb();
 
-  db.inventory = { ...initialInventory(), ...(db.inventory || {}) };
-  db.users ||= [];
-  db.sessions ||= [];
-  db.carts ||= {};
-  db.wishlists ||= {};
-  db.orders ||= [];
-  db.payments ||= [];
-  db.reviews ||= [];
+  result.inventory = { ...initialInventory(), ...(result.inventory || {}) };
+  result.users ||= [];
+  result.sessions ||= [];
+  result.carts ||= {};
+  result.wishlists ||= {};
+  result.orders ||= [];
+  result.payments ||= [];
+  result.reviews ||= [];
 
-  return db;
+  return result;
 }
 
-export async function writeDb(db) {
-  await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
-  await fs.writeFile(DB_PATH, JSON.stringify(db, null, 2));
-  return db;
+export async function writeDb(state) {
+  const db = openDatabase();
+  db.prepare("UPDATE state SET value = ? WHERE key = ?").run(JSON.stringify(state, null, 2), "store");
+  return state;
 }
 
 export async function updateDb(mutator) {
-  const db = await readDb();
-  const result = await mutator(db);
-  await writeDb(db);
+  const state = await readDb();
+  const result = await mutator(state);
+  await writeDb(state);
   return result;
 }
 

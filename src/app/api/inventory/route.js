@@ -1,12 +1,11 @@
 import { requireAdmin } from "@/lib/backend/auth";
 import { readDb, updateDb } from "@/lib/backend/db";
 import { forbidden, guarded, ok } from "@/lib/backend/responses";
-import { getAllProducts } from "@/lib/store-data";
 
 export const dynamic = "force-dynamic";
 
 function inventoryRows(db) {
-  return getAllProducts().map((product) => ({
+  return db.products.map((product) => ({
     ...db.inventory[String(product.id)],
     productId: String(product.id),
     name: product.name,

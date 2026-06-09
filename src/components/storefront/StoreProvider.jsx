@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useReducer } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef } from "react";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { getProductById } from "@/lib/store-data";
 
 const STORAGE_KEY = "mystic-commerce-store";
@@ -108,7 +109,9 @@ function reducer(state, action) {
 }
 
 export default function StoreProvider({ children }) {
+  const { user } = useAuth();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const syncedUserIdRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -137,6 +140,109 @@ export default function StoreProvider({ children }) {
       }),
     );
   }, [state.cartItems, state.isHydrated, state.reviewsByProduct, state.wishlistIds]);
+
+  useEffect(() => {
+    if (!state.isHydrated || !user?.id || syncedUserIdRef.current === user.id) {
+      return;
+    }
+
+    let isMounted = true;
+
+    async function syncServerState() {
+      try {
+        const [cartResponse, wishlistResponse] = await Promise.all([
+          fetch("/api/cart", { credentials: "include" }),
+          fetch("/api/wishlist", { credentials: "include" }),
+        ]);
+
+        if (!cartResponse.ok || !wishlistResponse.ok) {
+          syncedUserIdRef.current = user.id;
+          return;
+        }
+
+        const cartData = await cartResponse.json();
+        const wishlistData = await wishlistResponse.json();
+
+        if (!isMounted) {
+          return;
+        }
+
+        const mergedCart = [...(cartData.cart?.items ?? [])];
+        state.cartItems.forEach((item) => {
+          const existing = mergedCart.find(
+            (serverItem) => serverItem.productId === item.productId && serverItem.variantId === item.variantId,
+          );
+          if (existing) {
+            existing.quantity = Math.max(existing.quantity, item.quantity);
+          } else {
+            mergedCart.push(item);
+          }
+        });
+
+        const mergedWishlist = Array.from(new Set([...(wishlistData.wishlist ?? []), ...state.wishlistIds]));
+
+        dispatch({ type: "hydrate", payload: { ...state, cartItems: mergedCart, wishlistIds: mergedWishlist } });
+
+        await Promise.all([
+          fetch("/api/cart", {
+            method: "PUT",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ items: mergedCart }),
+          }),
+          fetch("/api/wishlist", {
+            method: "PUT",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ productIds: mergedWishlist }),
+          }),
+        ]);
+      } catch {
+      } finally {
+        if (isMounted) {
+          syncedUserIdRef.current = user.id;
+        }
+      }
+    }
+
+    syncServerState();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [state, user?.id]);
+
+  const persistCart = useCallback(async (cartItems) => {
+    if (!user?.id) {
+      return;
+    }
+
+    try {
+      await fetch("/api/cart", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cartItems }),
+      });
+    } catch {
+    }
+  }, [user?.id]);
+
+  const persistWishlist = useCallback(async (wishlistIds) => {
+    if (!user?.id) {
+      return;
+    }
+
+    try {
+      await fetch("/api/wishlist", {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productIds: wishlistIds }),
+      });
+    } catch {
+    }
+  }, [user?.id]);
 
   const value = useMemo(() => {
     const cartDetailedItems = state.cartItems
@@ -167,19 +273,50 @@ export default function StoreProvider({ children }) {
       wishlistCount: state.wishlistIds.length,
       isHydrated: state.isHydrated,
       addToCart(productId, variantId, quantity = 1) {
-        dispatch({ type: "addToCart", payload: { productId, variantId, quantity } });
+        const existingItem = state.cartItems.find(
+          (item) => item.productId === productId && item.variantId === variantId,
+        );
+
+        const nextCartItems = existingItem
+          ? state.cartItems.map((item) =>
+              item.productId === productId && item.variantId === variantId
+                ? { ...item, quantity: item.quantity + quantity }
+                : item,
+            )
+          : [...state.cartItems, { productId, variantId, quantity }];
+
+        dispatch({ type: "hydrate", payload: { ...state, cartItems: nextCartItems } });
+        persistCart(nextCartItems);
       },
       updateQuantity(productId, variantId, quantity) {
-        dispatch({ type: "updateQuantity", payload: { productId, variantId, quantity } });
+        const nextCartItems = state.cartItems
+          .map((item) =>
+            item.productId === productId && item.variantId === variantId ? { ...item, quantity } : item,
+          )
+          .filter((item) => item.quantity > 0);
+
+        dispatch({ type: "hydrate", payload: { ...state, cartItems: nextCartItems } });
+        persistCart(nextCartItems);
       },
       removeFromCart(productId, variantId) {
-        dispatch({ type: "removeFromCart", payload: { productId, variantId } });
+        const nextCartItems = state.cartItems.filter(
+          (item) => !(item.productId === productId && item.variantId === variantId),
+        );
+
+        dispatch({ type: "hydrate", payload: { ...state, cartItems: nextCartItems } });
+        persistCart(nextCartItems);
       },
       toggleWishlist(productId) {
-        dispatch({ type: "toggleWishlist", payload: { productId } });
+        const nextWishlistIds = state.wishlistIds.includes(productId)
+          ? state.wishlistIds.filter((id) => id !== productId)
+          : [...state.wishlistIds, productId];
+
+        dispatch({ type: "hydrate", payload: { ...state, wishlistIds: nextWishlistIds } });
+        persistWishlist(nextWishlistIds);
       },
       clearCart() {
-        dispatch({ type: "clearCart" });
+        dispatch({ type: "hydrate", payload: { ...state, cartItems: [] } });
+        persistCart([]);
       },
       isWishlisted(productId) {
         return state.wishlistIds.includes(productId);
@@ -224,7 +361,7 @@ export default function StoreProvider({ children }) {
           .sort((left, right) => new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime());
       },
     };
-  }, [state.cartItems, state.isHydrated, state.reviewsByProduct, state.wishlistIds]);
+  }, [persistCart, persistWishlist, state]);
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
 }

@@ -81,7 +81,7 @@ export default function Navbar() {
                 className="w-44 bg-transparent text-sm text-white outline-none placeholder:text-zinc-600"
               />
             </form>
-            <Link href="/products" className="relative rounded-2xl border border-white/10 p-3 text-zinc-300 transition hover:border-white/20 hover:text-white">
+            <Link href="/wishlist" className="relative rounded-2xl border border-white/10 p-3 text-zinc-300 transition hover:border-white/20 hover:text-white">
               <Heart className="h-4 w-4" />
               {wishlistCount > 0 ? <Badge>{wishlistCount}</Badge> : null}
             </Link>
@@ -90,15 +90,11 @@ export default function Navbar() {
               {cartCount > 0 ? <Badge dark>{cartCount}</Badge> : null}
             </Link>
             {user ? (
-              <button
-                type="button"
-                onClick={logout}
-                className="rounded-2xl border border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300 transition hover:border-white/20 hover:text-white"
-              >
-                Sign out
-              </button>
-            ) : (
               <Link href="/account" className="rounded-2xl border border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300 transition hover:border-white/20 hover:text-white">
+                Account
+              </Link>
+            ) : (
+              <Link href="/auth/login" className="rounded-2xl border border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-300 transition hover:border-white/20 hover:text-white">
                 Sign in
               </Link>
             )}
@@ -152,7 +148,7 @@ export default function Navbar() {
                   Admin
                 </Link>
               ) : null}
-              <Link href="/account" onClick={() => setIsOpen(false)} className="rounded-2xl border border-white/8 px-4 py-3 hover:border-white/16 hover:text-white">
+              <Link href={user ? "/account" : "/auth/login"} onClick={() => setIsOpen(false)} className="rounded-2xl border border-white/8 px-4 py-3 hover:border-white/16 hover:text-white">
                 {user ? "Account" : "Sign in"}
               </Link>
             </div>

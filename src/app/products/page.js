@@ -1,9 +1,6 @@
 import CatalogFilters from "@/components/storefront/CatalogFilters";
 import ProductCard from "@/components/storefront/ProductCard";
-import {
-  filterProducts,
-  getStoreCategories,
-} from "@/lib/store-data";
+import { filterDbProducts, getDbStoreCategories } from "@/lib/backend/products";
 
 export const metadata = {
   title: "MysticCommerce Catalog | Premium Tech Picks",
@@ -12,13 +9,15 @@ export const metadata = {
 
 export default async function ProductsPage({ searchParams }) {
   const params = await searchParams;
-  const categories = getStoreCategories();
-  const products = filterProducts({
+  const [categories, products] = await Promise.all([
+    getDbStoreCategories(),
+    filterDbProducts({
     category: params.category,
     collection: params.collection,
     query: params.q,
     sort: params.sort,
-  });
+    }),
+  ]);
 
   return (
     <div className="min-h-screen px-4 pb-16 pt-32 sm:px-6 lg:px-8">

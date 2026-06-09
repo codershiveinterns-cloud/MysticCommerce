@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -28,11 +27,6 @@ export default function CatalogFilters({ categories }) {
   const currentCollection = searchParams.get("collection") ?? "all";
   const currentSort = searchParams.get("sort") ?? "featured";
   const currentQuery = searchParams.get("q") ?? "";
-  const [query, setQuery] = useState(currentQuery);
-
-  useEffect(() => {
-    setQuery(currentQuery);
-  }, [currentQuery]);
 
   function updateParam(key, value) {
     const next = new URLSearchParams(searchParams.toString());
@@ -48,16 +42,18 @@ export default function CatalogFilters({ categories }) {
 
   function handleSearchSubmit(event) {
     event.preventDefault();
-    updateParam("q", query.trim());
+    const formData = new FormData(event.currentTarget);
+    updateParam("q", String(formData.get("q") || "").trim());
   }
 
   return (
     <form onSubmit={handleSearchSubmit} className="grid gap-4 rounded-[30px] border border-white/8 bg-white/[0.03] p-5 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div className="relative">
         <input
+          key={currentQuery}
+          name="q"
           type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          defaultValue={currentQuery}
           placeholder="Search products, categories, and creator tools"
           className="min-h-12 w-full rounded-2xl border border-white/10 bg-[#0b0c10] px-4 pr-28 text-sm text-white outline-none transition placeholder:text-zinc-600 focus:border-white/20"
         />

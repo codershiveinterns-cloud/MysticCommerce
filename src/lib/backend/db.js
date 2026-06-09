@@ -27,6 +27,7 @@ function createInitialDb() {
 
   return {
     meta: { version: 1, createdAt: now },
+    products: getAllProducts(),
     users: [
       {
         id: "usr_admin",
@@ -78,6 +79,7 @@ export async function readDb() {
   const result = row ? JSON.parse(row.value) : createInitialDb();
 
   result.inventory = { ...initialInventory(), ...(result.inventory || {}) };
+  result.products = Array.isArray(result.products) && result.products.length ? result.products : getAllProducts();
   result.users ||= [];
   result.sessions ||= [];
   result.carts ||= {};

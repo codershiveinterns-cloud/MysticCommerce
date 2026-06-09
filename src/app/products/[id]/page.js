@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useMemo, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check, Heart, ShieldAlert, ShoppingBag, Sparkles, Star } from "lucide-react";
@@ -9,17 +9,41 @@ import ProductCard from "@/components/storefront/ProductCard";
 import ProductArtwork from "@/components/storefront/ProductArtwork";
 import ProductReviews from "@/components/storefront/ProductReviews";
 import { useStore } from "@/components/storefront/StoreProvider";
-import { formatCurrency, getProductById, getProductImageSrc, getRelatedProducts } from "@/lib/store-data";
+import { formatCurrency, getProductById, getProductImageSrc } from "@/lib/store-data";
 
 export default function ProductPage({ params }) {
   const { id } = use(params);
-  const product = getProductById(id) ?? getProductById(1);
+  const fallbackProduct = getProductById(id) ?? getProductById(1);
+  const [product, setProduct] = useState(fallbackProduct);
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
-  return <ProductDetailContent key={product.id} product={product} />;
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadProduct() {
+      try {
+        const response = await fetch(`/api/products/${id}`);
+        const data = await response.json();
+
+        if (isMounted && data.product) {
+          setProduct(data.product);
+          setRelatedProducts(data.relatedProducts || []);
+        }
+      } catch {
+      }
+    }
+
+    queueMicrotask(() => loadProduct());
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
+
+  return <ProductDetailContent key={product.id} product={product} relatedProducts={relatedProducts} />;
 }
 
-function ProductDetailContent({ product }) {
-  const relatedProducts = useMemo(() => getRelatedProducts(product, 4), [product]);
+function ProductDetailContent({ product, relatedProducts }) {
   const [selectedVariant, setSelectedVariant] = useState(product.variants[0]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("description");

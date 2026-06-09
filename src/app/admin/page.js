@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { PackageCheck, ReceiptText, ShieldCheck, WalletCards } from "lucide-react";
+import { PackageCheck, Plus, ReceiptText, Save, ShieldCheck, WalletCards } from "lucide-react";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { formatCurrency } from "@/lib/store-data";
 
@@ -13,31 +13,44 @@ export default function AdminPage() {
   const [summary, setSummary] = useState(null);
   const [orders, setOrders] = useState([]);
   const [inventory, setInventory] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [productForm, setProductForm] = useState({
+    name: "",
+    category: "Smart Gadgets",
+    price: 99,
+    compareAtPrice: 129,
+    badge: "New",
+    stock: 12,
+    collections: "featured,new-arrivals",
+  });
   const [error, setError] = useState("");
 
   async function loadAdminData() {
     setError("");
 
     try {
-      const [summaryResponse, ordersResponse, inventoryResponse] = await Promise.all([
+      const [summaryResponse, ordersResponse, inventoryResponse, productsResponse] = await Promise.all([
         fetch("/api/admin/summary", { credentials: "include" }),
         fetch("/api/admin/orders", { credentials: "include" }),
         fetch("/api/inventory", { credentials: "include" }),
+        fetch("/api/admin/products", { credentials: "include" }),
       ]);
 
-      if (!summaryResponse.ok || !ordersResponse.ok || !inventoryResponse.ok) {
+      if (!summaryResponse.ok || !ordersResponse.ok || !inventoryResponse.ok || !productsResponse.ok) {
         throw new Error("Admin access is required.");
       }
 
-      const [summaryData, ordersData, inventoryData] = await Promise.all([
+      const [summaryData, ordersData, inventoryData, productsData] = await Promise.all([
         summaryResponse.json(),
         ordersResponse.json(),
         inventoryResponse.json(),
+        productsResponse.json(),
       ]);
 
       setSummary(summaryData.summary);
       setOrders(ordersData.orders || []);
       setInventory(inventoryData.inventory || []);
+      setProducts(productsData.products || []);
     } catch (adminError) {
       setError(adminError.message);
     }
@@ -69,6 +82,26 @@ export default function AdminPage() {
     loadAdminData();
   }
 
+  async function saveProduct(event) {
+    event.preventDefault();
+    await fetch("/api/admin/products", {
+      method: productForm.id ? "PATCH" : "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(productForm),
+    });
+    setProductForm({
+      name: "",
+      category: productForm.category,
+      price: 99,
+      compareAtPrice: 129,
+      badge: "New",
+      stock: 12,
+      collections: "featured,new-arrivals",
+    });
+    loadAdminData();
+  }
+
   if (isLoading) {
     return <AdminShell title="Loading admin dashboard" />;
   }
@@ -77,7 +110,7 @@ export default function AdminPage() {
     return (
       <AdminShell title="Admin access required">
         <p className="max-w-xl text-sm leading-7 text-zinc-400">Sign in with an admin account to manage products, inventory, orders, and payments.</p>
-        <Link href="/account" className="mt-6 inline-flex rounded-2xl bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#09090b] transition hover:bg-zinc-100">
+        <Link href="/auth/login" className="mt-6 inline-flex rounded-2xl bg-white px-5 py-3 text-xs font-semibold uppercase tracking-[0.24em] text-[#09090b] transition hover:bg-zinc-100">
           Sign in
         </Link>
       </AdminShell>
@@ -128,6 +161,52 @@ export default function AdminPage() {
       </section>
 
       <section className="rounded-[32px] border border-white/8 bg-white/[0.03] p-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">Product database</p>
+            <h2 className="mt-2 text-2xl font-semibold text-white">Manage catalog products</h2>
+          </div>
+          <button
+            type="button"
+            onClick={() => setProductForm({ name: "", category: "Smart Gadgets", price: 99, compareAtPrice: 129, badge: "New", stock: 12, collections: "featured,new-arrivals" })}
+            className="inline-flex items-center gap-2 rounded-2xl border border-white/10 px-4 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-200"
+          >
+            <Plus className="h-4 w-4" />
+            New
+          </button>
+        </div>
+
+        <form onSubmit={saveProduct} className="mt-6 grid gap-4 lg:grid-cols-6">
+          <Input label="Name" value={productForm.name} onChange={(value) => setProductForm((current) => ({ ...current, name: value }))} className="lg:col-span-2" />
+          <Input label="Category" value={productForm.category} onChange={(value) => setProductForm((current) => ({ ...current, category: value }))} className="lg:col-span-2" />
+          <Input label="Price" type="number" value={productForm.price} onChange={(value) => setProductForm((current) => ({ ...current, price: value }))} />
+          <Input label="Stock" type="number" value={productForm.stock} onChange={(value) => setProductForm((current) => ({ ...current, stock: value }))} />
+          <Input label="Compare at" type="number" value={productForm.compareAtPrice} onChange={(value) => setProductForm((current) => ({ ...current, compareAtPrice: value }))} />
+          <Input label="Badge" value={productForm.badge} onChange={(value) => setProductForm((current) => ({ ...current, badge: value }))} />
+          <Input label="Collections" value={productForm.collections} onChange={(value) => setProductForm((current) => ({ ...current, collections: value }))} className="lg:col-span-3" />
+          <button type="submit" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-white px-5 text-xs font-semibold uppercase tracking-[0.22em] text-[#09090b]">
+            <Save className="h-4 w-4" />
+            Save
+          </button>
+        </form>
+
+        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {products.map((product) => (
+            <button
+              key={product.id}
+              type="button"
+              onClick={() => setProductForm({ ...product, collections: product.collections.join(",") })}
+              className="rounded-2xl border border-white/8 bg-black/20 p-5 text-left transition hover:border-white/20"
+            >
+              <p className="font-semibold text-white">{product.name}</p>
+              <p className="mt-1 text-xs uppercase tracking-[0.2em] text-zinc-500">{product.category}</p>
+              <p className="mt-4 text-sm text-zinc-300">{formatCurrency(product.price)} · {product.stock} in stock</p>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="rounded-[32px] border border-white/8 bg-white/[0.03] p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">Inventory management</p>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {inventory.map((item) => (
@@ -174,5 +253,20 @@ function Metric({ icon: Icon, label, value }) {
       <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">{label}</p>
       <p className="mt-2 text-3xl font-semibold text-white">{value}</p>
     </div>
+  );
+}
+
+function Input({ label, value, onChange, type = "text", className = "" }) {
+  return (
+    <label className={`block ${className}`}>
+      <span className="mb-2 block text-xs font-semibold uppercase tracking-[0.2em] text-zinc-500">{label}</span>
+      <input
+        type={type}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        required
+        className="min-h-12 w-full rounded-2xl border border-white/10 bg-[#0b0c10] px-4 text-sm text-white outline-none focus:border-white/20"
+      />
+    </label>
   );
 }

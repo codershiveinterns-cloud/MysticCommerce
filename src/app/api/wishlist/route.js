@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/backend/auth";
 import { guarded, ok } from "@/lib/backend/responses";
-import { getProductById } from "@/lib/store-data";
+import { getDbProductById } from "@/lib/backend/products";
 import { updateDb } from "@/lib/backend/db";
 
 export const dynamic = "force-dynamic";
@@ -21,12 +21,12 @@ export async function PUT(request) {
   return guarded(async () => {
     const user = await requireUser();
     const payload = await request.json();
-    const ids = Array.isArray(payload.productIds)
-      ? payload.productIds.map(String).filter((id) => getProductById(id))
-      : [];
+    const ids = Array.isArray(payload.productIds) ? payload.productIds.map(String) : [];
+    const validProducts = await Promise.all(ids.map((id) => getDbProductById(id)));
+    const validIds = ids.filter((_, index) => validProducts[index]);
 
     const wishlist = await updateDb((db) => {
-      db.wishlists[user.id] = [...new Set(ids)];
+      db.wishlists[user.id] = [...new Set(validIds)];
       return db.wishlists[user.id];
     });
 

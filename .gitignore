@@ -22,6 +22,7 @@
 
 # local runtime database
 /.data/
+.claude/
 
 # misc
 .DS_Store
@@ -42,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
+.env*
